@@ -1,0 +1,10 @@
+=====================================================================
+SAFESHELL — MASTER PROJECT CONTEXT (v3.0)
+=====================================================================
+ENVIRONMENT GUARD: Before executing any command, verify `uname -s`. If the output is not "Linux", refuse execution and instruct the user to switch the integrated terminal to WSL Ubuntu.
+
+PROJECT: SafeShell — a verified transactional command execution framework for Linux. Target OS: Ubuntu 24.04 LTS, kernel >= 6.8. LINUX-ONLY.
+PHILOSOPHY: "AI proposes, but never decides." Every AI output is schema-validated, policy-checked, and simulation-tested. Deterministic templates first; LLM is a last resort. Fail-closed everywhere.
+HARDWARE: i5-13420H, 16GB RAM, RTX 2050 4GB VRAM. Local Ollama: qwen2.5-coder:3b (safeshell-planner-3b) and qwen2.5-coder:1.5b.
+STACK: Python 3.12 (Typer, Rich, Pydantic v2, instructor, sqlite3 FTS5, xgboost, scikit-learn) + Rust core (nix, serde, serde_json, sha2, tracing).
+IPC: Python invokes safeshell-core over stdin/stdout, one JSON line each direction.
