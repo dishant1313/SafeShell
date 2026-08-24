@@ -3,7 +3,7 @@
   <p><strong>A Safer Shell — Every system effect, undoable.</strong></p>
 </div>
 
-SafeShell is a verified transactional command execution framework for Linux. It acts as an invisible safety net over your standard terminal. 
+SafeShell is a verified transactional command execution framework **specially made for Linux**. It acts as an invisible safety net over your standard terminal, utilizing native Linux features like `overlayfs` and `eBPF` for true sandboxing. 
 
 > **Not a safer folder. A safer shell.** <br>
 > AI proposes. Simulation decides. SafeShell remembers — and learns.
