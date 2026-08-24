@@ -1,0 +1,1 @@
+Source: man cp\nThis is a mock man page for cp. It describes flags and effects.\n

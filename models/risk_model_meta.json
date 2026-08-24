@@ -1,0 +1,53 @@
+{
+  "feature_order": [
+    "recursive",
+    "force",
+    "wildcards",
+    "pipe_to_shell",
+    "redirect_write",
+    "priv_esc",
+    "path_etc",
+    "path_boot",
+    "path_dev",
+    "path_var",
+    "path_usr",
+    "directory_target",
+    "compound_ops",
+    "unknown_effects",
+    "deletes_count",
+    "creates_count",
+    "modifies_count",
+    "permissions_count",
+    "service_count",
+    "network_count",
+    "target_file_count",
+    "exec_family_id"
+  ],
+  "family_table": [
+    "rm",
+    "mv",
+    "cp",
+    "touch",
+    "chmod",
+    "chown",
+    "mkdir",
+    "ln",
+    "systemctl",
+    "tar",
+    "dd",
+    "apt",
+    "apt-get",
+    "curl",
+    "wget",
+    "cat",
+    "ls",
+    "sh",
+    "bash"
+  ],
+  "thresholds": [
+    0.35,
+    0.65
+  ],
+  "trained_at": "2026-08-20T17:22:49.291848",
+  "accuracy": 1.0
+}

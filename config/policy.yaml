@@ -1,0 +1,7 @@
+auto_approve:
+  - when: "tier == 'low' and brs < 100"
+  - when: "tier == 'medium' and brs < 500 and guarantee == 'T1'"
+require_human:
+  - when: "brs >= 500 or guarantee == 'T2'"
+deny:
+  - when: "tier == 'critical' or guarantee == 'T3'"

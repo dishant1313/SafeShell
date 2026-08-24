@@ -1,102 +1,85 @@
-# SafeShell
+<div align="center">
+  <h1>🛡️ SafeShell</h1>
+  <p><strong>A Safer Shell — Every system effect, undoable.</strong></p>
+</div>
 
-**Verified transactional command execution framework for Linux.**
+SafeShell is a verified transactional command execution framework for Linux. It acts as an invisible safety net over your standard terminal. 
 
-> AI proposes. Policy restricts. Simulation verifies. Snapshots protect.
-> Audit records everything. And the system learns.
+> **Not a safer folder. A safer shell.** <br>
+> AI proposes. Simulation decides. SafeShell remembers — and learns.
 
-## Philosophy
+Whenever you attempt a destructive command (like `rm`, `mv`, `chmod`, `curl`), SafeShell intercepts it, evaluates the blast radius, generates a deterministic rollback plan using AI, and simulates it in an isolated sandbox. If it's safe, you can approve the transaction, knowing you can easily undo it later. 
 
-- AI proposes but **never decides** — every AI output is schema-validated, policy-checked, and simulation-tested
-- **Deterministic templates first**; LLM is a last resort
-- **Fail-closed everywhere** — no snapshot, invalid plan, or divergence → block or escalate
+---
 
-## Quick Start
+## ✨ Features
+
+- **Interactive REPL (`safeshell_repl.py`)**: Drop into a fully interactive bash-like shell that automatically wraps every command in SafeShell's protection.
+- **Fail-Closed Design**: No snapshot, invalid plan, or divergence = block execution.
+- **Deterministic Templates First**: It relies on safe, known rollback templates whenever possible. 
+- **AI Fallback**: When templates fail, an Ollama-powered local AI model (`safeshell-planner-3b`) generates custom JSON rollback plans.
+- **Rust Core & EBPF Sandboxing**: The `safeshell-core` backend simulates commands at the system level to verify safety and capture exact state changes.
+
+## 🚀 Quickstart
+
+We provide an automated setup script that installs system dependencies, Rust, Python virtual environments, and pulls the local AI models via Ollama.
 
 ```bash
-make setup    # Install deps, pull models, create venv
-make build    # Compile Rust core binary
-make test     # Run all tests
-make lint     # Lint Python (ruff) + Rust (clippy)
+# 1. Clone the repository
+git clone https://github.com/dishant1313/SafeShell.git
+cd SafeShell
+
+# 2. Run the quickstart setup
+bash quickstart.sh
 ```
 
-## Repository Structure
+## 💻 Usage
+
+### 1. Interactive REPL (Recommended)
+You don't need to learn a new CLI syntax. Just launch our interactive shell:
+```bash
+source .venv/bin/activate
+./scripts/safeshell_repl.py
+```
+*Your prompt will change to `safeshell$ `. Navigate with `cd` and `ls` normally. Any destructive command will automatically be intercepted and protected.*
+
+### 2. Standard CLI Usage
+If you prefer running single commands, use the `safeshell run` prefix:
+
+```bash
+# Analyze command risk & blast radius
+safeshell analyze "rm -rf /tmp/build"
+
+# Generate verified rollback plan
+safeshell plan "mv config.yaml backup.yaml"
+
+# Dry-run transaction and view plain-English explanation
+safeshell whatif "chown -R root:root /var/www"
+
+# Execute a transactional command
+safeshell run "mv old.txt new.txt"
+
+# Undo a transaction
+safeshell undo <TXN_ID>
+
+# View cryptographic audit ledger
+safeshell ledger --verify
+```
+
+## 🛠️ Architecture
+
+SafeShell bridges Python and Rust using IPC:
+- **Python CLI / Planner**: Parses arguments, runs RAG, and queries local LLMs to formulate a plan.
+- **Rust Core**: Executes commands in an `overlayfs` sandbox, verifies rollbacks, and journals cryptographic transactions.
 
 ```
 safeshell/
-├── scripts/
-│   └── setup_env.sh
-├── safeshell/
-│   ├── __init__.py
-│   ├── __main__.py
-│   ├── schemas.py          # Frozen v3 contract
-│   ├── config.py
-│   ├── executor.py         # IPC bridge to Rust
-│   ├── parser.py           # Phase 2
-│   ├── classifier.py       # Phase 3
-│   ├── brs.py              # Phase 4
-│   ├── state.py            # Phase 4
-│   ├── templates.py        # Phase 5
-│   ├── rag.py              # Phase 5
-│   ├── planner.py          # Phase 5
-│   ├── validator.py        # Phase 5
-│   ├── policy.py           # Phase 4
-│   ├── causal.py           # Phase 9
-│   ├── simulation.py       # Phase 8
-│   ├── recovery.py         # Phase 9
-│   ├── replay.py           # Phase 10
-│   ├── learn.py            # Phase 10
-│   ├── anomaly.py          # Phase 10
-│   ├── ledger.py           # Phase 9
-│   ├── explain.py          # Phase 10
-│   └── cli.py              # Phase 10
-├── core/
-│   ├── Cargo.toml
-│   └── src/
-│       ├── main.rs
-│       ├── ipc.rs
-│       ├── ops.rs
-│       ├── sandbox.rs      # Phase 7
-│       ├── snapshot.rs     # Phase 6
-│       ├── state.rs        # Phase 6
-│       ├── monitor.rs      # Phase 7
-│       └── journal.rs      # Phase 9
-├── tests/
-│   ├── conftest.py
-│   ├── test_schemas.py
-│   ├── test_ipc.py
-│   └── test_smoke.py
-├── models/
-│   └── Modfile.planner-3b
-├── config/
-├── data/
-├── docs/
-├── demo/
-├── .safeshell/
-│   ├── snapshots/
-│   └── txns/
-├── requirements.txt
-├── pyproject.toml
-├── Makefile
-├── .gitignore
-├── LICENSE
-├── README.md
-└── PHASE_NOTES.md
+├── scripts/            # Setup scripts, REPL, Human Checks
+├── safeshell/          # Python Application (CLI, RAG, Planners)
+├── core/               # Rust Core Binary (Sandbox, EBPF, IPC)
+├── tests/              # Extensive test suite
+└── config/             # SafeShell Policies
 ```
 
-## 10-Phase Roadmap
-
-- [x] **Phase 1**: Foundations & Environment
-- [ ] **Phase 2**: Command Parser
-- [ ] **Phase 3**: Risk Classifier
-- [ ] **Phase 4**: BRS, State Collector, Policy Engine
-- [ ] **Phase 5**: Templates, RAG, AI Planner, Validator
-- [ ] **Phase 6**: Snapshots & State (Rust)
-- [ ] **Phase 7**: Sandbox & eBPF Monitor (Rust)
-- [ ] **Phase 8**: Simulation Engine
-- [ ] **Phase 9**: Ledger, Recovery, Causal Undo
-- [ ] **Phase 10**: TUI, Replay, Learning, Explain, Anomaly
-
-## License
-
+## 📝 License
 MIT

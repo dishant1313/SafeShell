@@ -1,0 +1,11 @@
+brs_version: "1.0"
+size_weight: 1
+system_path_multiplier: 5
+system_paths: ["/etc", "/boot", "/usr", "/var"]
+no_snapshot_multiplier: 3
+recursive_delete_per_file: 2
+service_dependent_weight: 20
+network_egress: 200
+privilege_escalation: 150
+wildcard_over_100: 100
+critical_sentinel: 999999999

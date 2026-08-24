@@ -1,0 +1,1 @@
+Source: man systemctl\nThis is a mock man page for systemctl. It describes flags and effects.\n

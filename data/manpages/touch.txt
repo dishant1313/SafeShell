@@ -1,0 +1,1 @@
+Source: man touch\nThis is a mock man page for touch. It describes flags and effects.\n

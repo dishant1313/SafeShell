@@ -1,0 +1,1 @@
+Source: man chmod\nThis is a mock man page for chmod. It describes flags and effects.\n

@@ -1,0 +1,12 @@
+[
+    "ls -l /tmp",
+    "mkdir /tmp/bench1",
+    "touch /tmp/bench1/file1.txt",
+    "echo 'hello' > /tmp/bench1/file2.txt",
+    "rm /tmp/bench1/file1.txt",
+    "chmod 777 /tmp/bench1",
+    "mv /tmp/bench1/file2.txt /tmp/bench1/file3.txt",
+    "cp /tmp/bench1/file3.txt /tmp/bench1/file4.txt",
+    "chown root:root /tmp/bench1",
+    "rm -rf /tmp/bench1"
+]

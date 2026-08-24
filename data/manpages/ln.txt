@@ -1,0 +1,1 @@
+Source: man ln\nThis is a mock man page for ln. It describes flags and effects.\n

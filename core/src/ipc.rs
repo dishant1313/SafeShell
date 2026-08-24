@@ -38,3 +38,29 @@ impl CoreResponse {
         }
     }
 }
+
+
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CollectStateParams {
+    pub paths: Vec<String>,
+    pub services: Option<Vec<String>>,
+    pub max_files: Option<usize>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SnapshotParams {
+    pub paths: Vec<String>,
+    pub snapshot_id: String,
+    pub snapshots_dir: String,
+    pub services: Option<Vec<String>>,
+    pub max_files: Option<usize>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RestoreParams {
+    pub snapshot_id: String,
+    pub snapshots_dir: String,
+}

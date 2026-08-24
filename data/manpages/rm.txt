@@ -1,0 +1,1 @@
+Source: man rm\nThis is a mock man page for rm. It describes flags and effects.\n

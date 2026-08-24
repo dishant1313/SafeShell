@@ -8,10 +8,10 @@ mod ipc;
 mod ops;
 
 // Stub modules for future phases
-// mod sandbox;   // Phase 7
-// mod snapshot;  // Phase 6
-// mod state;     // Phase 6
-// mod monitor;   // Phase 7
+pub mod sandbox;   // Phase 7
+mod snapshot;
+mod state;
+pub mod monitor;   // Phase 7
 // mod journal;   // Phase 9
 
 use std::io::{self, BufRead, Write};

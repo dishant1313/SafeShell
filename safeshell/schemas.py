@@ -9,7 +9,7 @@ be modified without a full migration plan.
 import secrets
 from datetime import datetime
 from enum import Enum
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -134,6 +134,7 @@ class RollbackAction(BaseModel):
     snapshot_ref: Optional[str] = None
     order: int
     undoes_steps: list[str] = []
+    params: Optional[dict] = None
 
 
 class Signature(BaseModel):
@@ -157,6 +158,7 @@ class RollbackPlan(BaseModel):
     candidates_tried: Optional[int] = None
     selected_index: Optional[int] = None
     signature: Optional[Signature] = None
+    simulation: Optional["SimulationReport"] = None
 
 
 class PredictedChanges(BaseModel):
@@ -263,3 +265,39 @@ def new_id(prefix: str) -> str:
     Returns a string of the form \'{prefix}_{6 hex chars}\'.
     """
     return f"{prefix}_{secrets.token_hex(3)}"
+
+
+from datetime import datetime
+from typing import Dict, Literal
+
+
+class FileEntry(BaseModel):
+    path: str
+    sha256: str
+    mode: int
+    uid: int
+    gid: int
+    size: int
+    exists: bool
+
+
+class StateManifest(BaseModel):
+    manifest_id: str
+    collected_at: datetime
+    files: List[FileEntry]
+    services: Dict[str, str]
+    truncated: bool
+
+
+class PolicyDecision(BaseModel):
+    action: Literal["deny", "require_human", "auto_approve"]
+    rule: str | None
+
+
+class PlanResult(BaseModel):
+    path: Literal["template", "rag", "ai", "denied"]
+    denied_reason: Optional[str] = None
+    candidates: List[RollbackPlan] = Field(default_factory=list)
+    selected_index: int = 0
+    simulation: Optional[SimulationReport] = None
+    analysis: Optional[CommandAnalysis] = None

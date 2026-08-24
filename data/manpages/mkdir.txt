@@ -1,0 +1,1 @@
+Source: man mkdir\nThis is a mock man page for mkdir. It describes flags and effects.\n

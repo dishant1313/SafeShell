@@ -4,7 +4,14 @@ target/
 .safeshell/
 __pycache__/
 *.pyc
+*.pyo
+.pytest_cache/
+.DS_Store
 models/*.joblib
 data/*.db
 nohup.out
 *.gguf
+safeshell.egg-info/
+acceptance_out.txt
+test_tamper.py
+FIXES.md
